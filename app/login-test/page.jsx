@@ -10,6 +10,7 @@ export default function LoginTest() {
   const [userId, setUserId] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [users, setUsers] = useState([])
   const [loadingUsers, setLoadingUsers] = useState(true)
@@ -80,6 +81,7 @@ export default function LoginTest() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setSuccess('')
     setLoading(true)
 
     try {
@@ -102,10 +104,10 @@ export default function LoginTest() {
 
       // Cookie is set automatically by the server (httpOnly, so not readable by JS)
       // If login was successful, the cookie is set and will be sent with future requests
-      // Redirect to dashboard on success
-      router.push('/dashboard')
+      setSuccess('Login successful! You have been authenticated.')
     } catch (err) {
       setError(err.message || 'Failed to login. Please check your credentials.')
+    } finally {
       setLoading(false)
     }
   }
@@ -141,6 +143,14 @@ export default function LoginTest() {
                 <p className="text-xs text-red-700 dark:text-red-400">{error}</p>
               </div>
             )}
+            {success && (
+              <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                <p className="text-sm text-green-700 dark:text-green-400 font-medium flex items-center gap-2">
+                  <span className="text-lg">✅</span>
+                  {success}
+                </p>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -159,6 +169,7 @@ export default function LoginTest() {
                     onChange={(e) => {
                       setUserId(e.target.value)
                       setError('')
+                      setSuccess('')
                     }}
                     required
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors"
@@ -183,6 +194,7 @@ export default function LoginTest() {
                     onChange={(e) => {
                       setPassword(e.target.value)
                       setError('')
+                      setSuccess('')
                     }}
                     required
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors"
