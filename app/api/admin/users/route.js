@@ -20,7 +20,7 @@ export async function GET(request) {
       `SELECT email, first_name
        FROM users
        WHERE email LIKE 'user%@test.com'
-       ORDER BY first_name DESC
+       ORDER BY CAST(SUBSTRING(first_name FROM 5) AS INTEGER) DESC
        LIMIT $1`,
       [limit]
     )

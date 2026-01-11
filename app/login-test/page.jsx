@@ -27,8 +27,14 @@ export default function LoginTest() {
   const fetchUsers = async () => {
     try {
       setLoadingUsers(true)
-      // Try to fetch from API
-      const response = await fetch('/api/admin/users?limit=50')
+      // Try to fetch from API with cache busting
+      const response = await fetch(`/api/admin/users?limit=50&_t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: {
+          'Pragma': 'no-cache',
+          'Cache-Control': 'no-cache'
+        }
+      })
       const data = await response.json()
       if (data.success && data.data.length > 0) {
         setUsers(data.data)
